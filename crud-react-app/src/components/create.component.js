@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { createPerson } from "../functions/person";
 
 const initialPersons = {
   name: "",
@@ -23,8 +23,7 @@ const CreateComponent = () => {
     e.preventDefault();
 
     // api request
-    axios
-      .post("http://localhost:4000/persons/add", person)
+    createPerson(person)
       .then((res) => {
         console.log(res);
         navigation("/index");

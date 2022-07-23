@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { updatePerson, getPerson } from "../functions/person";
 
 const initialPersons = {
   name: "",
@@ -21,8 +21,7 @@ const EditComponent = () => {
   };
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:4000/persons/${params.id}`)
+    getPerson(params.id)
       .then((res) => {
         setPerson(res.data);
       })
@@ -33,8 +32,7 @@ const EditComponent = () => {
     e.preventDefault();
 
     // api request
-    axios
-      .put(`http://localhost:4000/persons/update/${params.id}`, person)
+    updatePerson(params.id, person)
       .then((res) => {
         console.log(res);
         navigation("/index");

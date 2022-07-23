@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import { getPersons, deletePerson } from "../functions/person";
 
 const IndexComponent = () => {
   const [persons, setPersons] = useState([]);
@@ -10,8 +10,7 @@ const IndexComponent = () => {
   }, []);
 
   const onInit = () => {
-    axios
-      .get("http://localhost:4000/persons/")
+    getPersons()
       .then((res) => {
         console.log(res);
         setPersons(res.data);
@@ -22,8 +21,7 @@ const IndexComponent = () => {
   };
 
   const onDelete = (id) => {
-    axios
-      .delete(`http://localhost:4000/persons/delete/${id}`)
+    deletePerson(id)
       .then((res) => {
         console.log(res);
         onInit();
