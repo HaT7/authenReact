@@ -1,11 +1,7 @@
-const express = require("express");
-const personRoutes = express.Router();
-
 // Lay db len
 let Person = require("../Models/person.model");
 
-// Define routes
-personRoutes.route("/add").post(function (req, res) {
+exports.create = async (req, res) => {
   let person = new Person(req.body);
 
   person
@@ -16,27 +12,28 @@ personRoutes.route("/add").post(function (req, res) {
     .catch((err) => {
       res.status(400).send("unable to add person: " + err.message);
     });
-});
+};
 
-personRoutes.route("/").get(function (req, res) {
+exports.getAll = async (req, res) => {
   Person.find(function (err, persons) {
     if (err) {
       console.log(err);
     } else {
+      console.log(persons);
       res.json(persons);
     }
   });
-});
+};
 
-personRoutes.route("/:id").get(function (req, res) {
+exports.getById = async (req, res) => {
   let id = req.params.id;
 
   Person.findById(id, function (err, person) {
     res.json(person);
   });
-});
+};
 
-personRoutes.route("/update/:id").put(function (req, res) {
+exports.update = async (req, res) => {
   Person.findById(req.params.id, function (err, person) {
     if (!person) {
       res.status(404).send("data not found");
@@ -55,9 +52,9 @@ personRoutes.route("/update/:id").put(function (req, res) {
         });
     }
   });
-});
+};
 
-personRoutes.route("/delete/:id").delete(function (req, res) {
+exports.remove = async (req, res) => {
   let id = req.params.id;
 
   Person.findByIdAndRemove(id, function (err, person) {
@@ -67,7 +64,4 @@ personRoutes.route("/delete/:id").delete(function (req, res) {
       res.json("Delete successfully");
     }
   });
-});
-
-// export routes
-module.exports = personRoutes;
+};

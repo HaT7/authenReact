@@ -5,7 +5,8 @@ const PORT = 4000;
 const cors = require("cors");
 const mongoose = require("mongoose");
 const config = require("./DB.js");
-const personRoute = require("./Routes/person.route");
+const personRoute = require("./Routes/persons");
+const { readdirSync } = require("fs");
 
 // config db
 mongoose.Promise = global.Promise;
@@ -23,7 +24,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use("/persons", personRoute);
+//route middleware
+readdirSync("./Routes").map((r) => app.use("/api", require("./Routes/" + r)));
 
 app.listen(PORT, function () {
   console.log("Server is running on port " + PORT);
