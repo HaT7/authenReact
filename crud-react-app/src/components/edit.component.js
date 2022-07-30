@@ -14,10 +14,25 @@ const EditComponent = () => {
   const params = useParams();
   const navigation = useNavigate();
 
-  const onChange = (e) => {
+  const onChange = (value, feild) => {
+    switch (feild) {
+      case "name":
+        errors.name = value !== "" ? "" : "This field is required";
+        break;
+      case "age":
+        errors.age = value > 0 ? "" : "This field is required";
+        break;
+      case "company":
+        errors.company = value !== "" ? "" : "This field is required";
+        break;
+      default:
+        break;
+    }
+
+    setErrors({ ...errors });
     setPerson({
       ...person,
-      [e.target.name]: e.target.value,
+      [feild]: value,
     });
   };
 
@@ -29,20 +44,9 @@ const EditComponent = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const validateForm = () => {
-    let temp = {};
-    temp.name = person.name !== "" ? "" : "This field is required";
-    temp.age = person.age > 0 ? "" : "This field is required";
-    temp.company = person.company !== "" ? "" : "This field is required";
-
-    setErrors({ ...temp });
-
-    return Object.values(temp).every((x) => x === "");
-  };
-
   const onSubmit = (e) => {
     e.preventDefault();
-    if (validateForm()) {
+    if (Object.values(errors).every((x) => x === "")) {
       // api request
       updatePerson(params.id, person)
         .then((res) => {
@@ -54,6 +58,7 @@ const EditComponent = () => {
         });
       // reset to intial
       setPerson(initialPersons);
+      setErrors({ name: "", age: "", company: "" });
     }
   };
 
@@ -67,7 +72,7 @@ const EditComponent = () => {
             type="text"
             name="name"
             value={person.name}
-            onChange={(e) => onChange(e)}
+            onChange={(e) => onChange(e.target.value, "name")}
             className="form-control"
           />
           {errors.name.length > 0 && (
@@ -80,7 +85,7 @@ const EditComponent = () => {
             type="number"
             name="age"
             value={person.age}
-            onChange={(e) => onChange(e)}
+            onChange={(e) => onChange(e.target.value, "age")}
             className="form-control"
           />
           {errors.age.length > 0 && (
@@ -93,7 +98,7 @@ const EditComponent = () => {
             type="text"
             name="company"
             value={person.company}
-            onChange={(e) => onChange(e)}
+            onChange={(e) => onChange(e.target.value, "company")}
             className="form-control"
           />
           {errors.company.length > 0 && (
