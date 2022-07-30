@@ -10,6 +10,7 @@ const initialPersons = {
 
 const EditComponent = () => {
   const [person, setPerson] = useState(initialPersons);
+  const [errors, setErrors] = useState({ name: "", age: "", company: "" });
   const params = useParams();
   const navigation = useNavigate();
 
@@ -28,20 +29,32 @@ const EditComponent = () => {
       .catch((err) => console.log(err));
   }, []);
 
+  const validateForm = () => {
+    let temp = {};
+    temp.name = person.name !== "" ? "" : "This field is required";
+    temp.age = person.age > 0 ? "" : "This field is required";
+    temp.company = person.company !== "" ? "" : "This field is required";
+
+    setErrors({ ...temp });
+
+    return Object.values(temp).every((x) => x === "");
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
-
-    // api request
-    updatePerson(params.id, person)
-      .then((res) => {
-        console.log(res);
-        navigation("/index");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    // reset to intial
-    setPerson(initialPersons);
+    if (validateForm()) {
+      // api request
+      updatePerson(params.id, person)
+        .then((res) => {
+          console.log(res);
+          navigation("/index");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      // reset to intial
+      setPerson(initialPersons);
+    }
   };
 
   return (
@@ -57,6 +70,9 @@ const EditComponent = () => {
             onChange={(e) => onChange(e)}
             className="form-control"
           />
+          {errors.name.length > 0 && (
+            <span className="text-danger">{errors.name}</span>
+          )}
         </div>
         <div className="form-group">
           <label>Age</label>
@@ -67,6 +83,9 @@ const EditComponent = () => {
             onChange={(e) => onChange(e)}
             className="form-control"
           />
+          {errors.age.length > 0 && (
+            <span className="text-danger">{errors.age}</span>
+          )}
         </div>
         <div className="form-group">
           <label>Company</label>
@@ -77,6 +96,9 @@ const EditComponent = () => {
             onChange={(e) => onChange(e)}
             className="form-control"
           />
+          {errors.company.length > 0 && (
+            <span className="text-danger">{errors.company}</span>
+          )}
         </div>
         <button type="submit" className="btn btn-primary">
           Submit

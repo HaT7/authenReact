@@ -1,3 +1,5 @@
+// ----------------------- start up class ------------------------------
+// import các thư viện vần thiết
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
