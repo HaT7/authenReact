@@ -1,15 +1,21 @@
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route, Link } from "react-router-dom";
 
 import CreateComponent from "./components/create.component";
 import EditComponent from "./components/edit.component";
 import IndexComponent from "./components/index.component";
+import TestComponent from "./components/test.component";
+
+// context
+import {AuthenticationContextprovider} from "./service/authentication/authentication.context";
 
 function App() {
+
   return (
-    <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <AuthenticationContextprovider>
+      <TestComponent/>
+      {/* <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
           <div className="navbar-brand" href="#">
             CRUD app
@@ -45,8 +51,8 @@ function App() {
         <Route path="create" element={<CreateComponent />} />
         <Route path="edit/:id" element={<EditComponent />} />
         <Route path="index" element={<IndexComponent />} />
-      </Routes>
-    </>
+      </Routes> */}
+    </AuthenticationContextprovider>
   );
 }
 

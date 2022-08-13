@@ -64,7 +64,7 @@ const EditComponent = () => {
 
   return (
     <div className="container">
-      <h2>Add New Person</h2>
+      <h2>Edit Person</h2>
       <form onSubmit={onSubmit}>
         <div className="form-group">
           <label>Name</label>
