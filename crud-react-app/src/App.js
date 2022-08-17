@@ -1,12 +1,17 @@
-import React, { Component, useContext } from "react";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route, Link } from "react-router-dom";
 
 import CreateComponent from "./components/create.component";
 import EditComponent from "./components/edit.component";
 import IndexComponent from "./components/index.component";
-import TestComponent from "./components/test.component";
+import LoginComponent from "./components/login.component";
+import RegisterComponent from "./components/register.component";
 
+
+// routes
+import AdminRoute from "./routes/AdminRoute";
+import UserRoute from "./routes/UserRoute";
 // context
 import {AuthenticationContextprovider} from "./service/authentication/authentication.context";
 
@@ -14,8 +19,7 @@ function App() {
 
   return (
     <AuthenticationContextprovider>
-      <TestComponent/>
-      {/* <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
           <div className="navbar-brand" href="#">
             CRUD app
@@ -43,15 +47,39 @@ function App() {
                   Create
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link to="/login" className="nav-link">
+                  Login
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/register" className="nav-link">
+                  Register
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
       </nav>
       <Routes>
-        <Route path="create" element={<CreateComponent />} />
-        <Route path="edit/:id" element={<EditComponent />} />
-        <Route path="index" element={<IndexComponent />} />
-      </Routes> */}
+        <Route path="create" element={
+          <AdminRoute>
+           <CreateComponent />
+          </AdminRoute>
+        } />
+        <Route path="edit/:id" element={
+          <AdminRoute>
+            <EditComponent />
+          </AdminRoute>
+        } />
+        <Route path="index" element={
+          <UserRoute>
+            <IndexComponent />
+          </UserRoute>
+        } />
+        <Route path="login" element={<LoginComponent />} />
+        <Route path="register" element={<RegisterComponent />} />
+      </Routes>
     </AuthenticationContextprovider>
   );
 }

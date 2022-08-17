@@ -36,28 +36,28 @@ export const AuthenticationContextprovider = ({children})=>{
       };
     
     const onRegister = async (email, password, repeatedPassword) => {
-    setIsLoading(true);
-    if (password !== repeatedPassword) {
-        setError("Error: Passwords do not match");
-        return;
-    }
-    const result = await auth.createUserWithEmailAndPassword(email, password);
-    const idTokenResult = await result.user.getIdTokenResult();
-    createOrUpdateUser(idTokenResult.token)
-        .then((res) => {
-        setUser({
-            name: res.data.name,
-            email: res.data.email,
-            token: idTokenResult.token,
-            role: res.data.role,
-            _id: res.data._id,
-        });
-        setIsLoading(false);
-        })
-        .catch((err) => {
-        setIsLoading(false);
-        console.log(err);
-        });
+        setIsLoading(true);
+        if (password !== repeatedPassword) {
+            setError("Error: Passwords do not match");
+            return;
+        }
+        const result = await auth.createUserWithEmailAndPassword(email, password);
+        const idTokenResult = await result.user.getIdTokenResult();
+        createOrUpdateUser(idTokenResult.token)
+            .then((res) => {
+            setUser({
+                name: res.data.name,
+                email: res.data.email,
+                token: idTokenResult.token,
+                role: res.data.role,
+                _id: res.data._id,
+            });
+            setIsLoading(false);
+            })
+            .catch((err) => {
+            setIsLoading(false);
+            console.log(err);
+            });
     };
 
     const onLogout = () => {

@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react";
 import{AuthenticationContext} from "../service/authentication/authentication.context";
 
-const TestComponent = () => {
+const RegisterComponent = () => {
   const [email, setEmail] = useState("nmtri31082001@gmail.com");
   const [password, setPassword] = useState("123456789");
-  const {isAuthenticated, user, onLogout, onLogin} = useContext(AuthenticationContext);
-
+  const [confirmPassword, setConfirmPassword] = useState("123456789");
+  const {isAuthenticated, user, onLogout, onRegister} = useContext(AuthenticationContext);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await onLogin(email,password);
+    await onRegister(email,password, confirmPassword);
   };
 
   return (
@@ -33,7 +33,15 @@ const TestComponent = () => {
             className="form-control"
           />
         </div>
-    
+        <div className="form-group">
+          <label>confirm password</label>
+          <input
+            type="text"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="form-control"
+          />
+        </div>
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
@@ -44,10 +52,10 @@ const TestComponent = () => {
       }
        {
         isAuthenticated ? <button onClick={onLogout}>Logout</button>
-        : <button onClick={onLogin}>Log in</button>
+        : <h1>User currently login</h1>
       }
     </div>
   );
 };
 
-export default TestComponent;
+export default RegisterComponent;
